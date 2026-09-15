@@ -83,10 +83,18 @@ def calcular_metricas(registros: list[Registro]) -> dict[str, float]:
     media_real = media(reais)
     soma_quadrados = sum((a - media_real) ** 2 for a in reais)
     r2 = 1 - sum((a - p) ** 2 for a, p in zip(reais, previstos)) / soma_quadrados if soma_quadrados else 0.0
+    # Baseline ingênuo: previsão constante igual à média histórica observada.
+    # A comparação mostra se o modelo informado supera uma referência simples.
+    baseline = [media_real] * len(reais)
+    baseline_mae = media([abs(a - p) for a, p in zip(reais, baseline)])
+    baseline_mse = media([(a - p) ** 2 for a, p in zip(reais, baseline)])
+    baseline_rmse = math.sqrt(baseline_mse)
     return {
         "erro_absoluto_medio_ms": mae,
         "erro_relativo_medio_percentual": media([r.erro_relativo_percentual for r in registros]),
         "MAE_ms": mae, "MSE_ms2": mse, "RMSE_ms": rmse, "R2": r2,
+        "baseline_MAE_ms": baseline_mae, "baseline_MSE_ms2": baseline_mse,
+        "baseline_RMSE_ms": baseline_rmse,
     }
 
 
@@ -148,7 +156,13 @@ def imprimir_relatorio(registros: list[Registro]) -> None:
     print("\n=== ERROS E PERFORMANCE DO MODELO ===")
     for chave, valor in metricas.items(): print(f"{chave}: {valor:.4f}")
     print(f"Previsão da próxima latência (média móvel): {prever_latencia(registros):.2f} ms")
-    print("\nInterpretação: MAE/RMSE menores indicam previsões mais próximas do real; R² próximo de 1 indica maior poder explicativo.")
+    print("\nComparação com baseline constante (média histórica):")
+    print(f"baseline_MAE_ms: {metricas['baseline_MAE_ms']:.4f}")
+    print(f"baseline_MSE_ms2: {metricas['baseline_MSE_ms2']:.4f}")
+    print(f"baseline_RMSE_ms: {metricas['baseline_RMSE_ms']:.4f}")
+    melhora = (metricas['baseline_MAE_ms'] - metricas['MAE_ms']) / metricas['baseline_MAE_ms'] * 100 if metricas['baseline_MAE_ms'] else 0.0
+    print(f"melhora do modelo sobre o baseline (MAE): {melhora:.2f}%")
+    print("Interpretação: MAE/RMSE menores indicam previsões mais próximas do real; R² próximo de 1 indica maior poder explicativo.")
 
 
 def executar_demo(registros: list[Registro]) -> None:

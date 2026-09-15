@@ -30,7 +30,7 @@ python codigo_fonte.py
 
 ## Funcionalidades implementadas
 
-O protótipo oferece carregamento de dados CSV, consulta de registros, latência média, perda de pacotes, disponibilidade aproximada, potência elétrica média, erro absoluto, erro relativo, MAE, MSE, RMSE, R², média móvel para previsão, heap de alertas críticos e trie de busca por prefixo.
+O protótipo oferece carregamento de dados CSV, consulta de registros, latência média, perda de pacotes, disponibilidade aproximada, potência elétrica média, erro absoluto, erro relativo, MAE, MSE, RMSE, R², média móvel para previsão, comparação com um baseline constante baseado na média histórica, heap de alertas críticos e trie de busca por prefixo.
 
 ## Observação sobre o vídeo
 

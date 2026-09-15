@@ -66,6 +66,8 @@ O sistema calcula quatro métricas de performance.
 
 Para a base simulada, os valores aproximados são **MAE = 26,0 ms**, **MSE = 1.385,0 ms²**, **RMSE = 37,22 ms** e **R² = 0,41**. O RMSE superior ao MAE mostra que alguns desvios maiores influenciam a avaliação. O R² moderado indica que a média móvel é útil como referência inicial, mas ainda não explica toda a variação das latências.
 
+Para estabelecer uma referência objetiva, o sistema também calcula um baseline constante. Esse baseline utiliza a média histórica de latência como previsão para todos os registros. O baseline obteve **MAE = 41,50 ms**, **MSE = 2.365,25 ms²** e **RMSE = 48,63 ms**. A média móvel obteve redução de aproximadamente **37,35% no MAE** em relação ao baseline. Portanto, dentro da base simulada, o modelo simples apresenta desempenho superior à referência constante.
+
 ## 8. Priorização de alertas com heap
 
 Alertas são criados quando a latência ultrapassa 180 ms ou quando a perda de pacotes é igual ou superior a 2%. A severidade usada no protótipo combina o erro de latência com a perda:
